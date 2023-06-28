@@ -1,70 +1,71 @@
 const Curso = require("../models/Curso");
 
 
-async function curso(req, res){
+async function curso(req, res) {
     const id = req.params.id
 
     //check if user exists 
     const curso = await Curso.findById(id)
-    
-    if(!curso) {
-        return res.status(404).json({ msg: 'Curso não encontrado!'})
+
+    if (!curso) {
+        return res.status(404).json({ msg: 'Curso não encontrado!' })
     }
-    
+
     res.status(200).json({ curso })
 }
 
-async function cursos(req, res){
+async function cursos(req, res) {
     const cursos = await Curso.find()
     return res.status(200).json(cursos)
 }
 
-async function criarCurso(req, res){
-    const {title, description, img_url, categoria, link} = req.body
+async function criarCurso(req, res) {
+    const { title, description, img_url, categoria, link } = req.body
 
     //validations
 
-    if(!title) {
-        return res.status(422).json({msg: 'O title é obrigatório'})
+    if (!title) {
+        return res.status(422).json({ msg: 'O title é obrigatório' })
     }
 
-    if(!description) {
-        return res.status(422).json({msg: 'A description é obrigatória'})
+    if (!description) {
+        return res.status(422).json({ msg: 'A description é obrigatória' })
     }
 
-    if(!link) {
-        return res.status(422).json({msg: 'O link é obrigatório'})
+    if (!link) {
+        return res.status(422).json({ msg: 'O link é obrigatório' })
     }
-    if(!categoria) {
-        return res.status(422).json({msg: 'Categoria é obrigatório'})
+    if (!categoria) {
+        return res.status(422).json({ msg: 'Categoria é obrigatório' })
     }
-//create curso
+    //create curso
 
-const curso = new Curso({
-    title,
-    description,
-    link,
-    img_url,
-    categoria
-})
+    const curso = new Curso({
+        title,
+        description,
+        link,
+        img_url,
+        categoria
+    })
 
-try {
-    await curso.save()
+    try {
+        await curso.save()
 
-    res.status(201).json({msg: 'Curso cadastrado com sucesso!'})
+        res.status(201).json({ msg: 'Curso cadastrado com sucesso!' })
 
-}catch(erro) {
+    } catch (erro) {
 
-    console.log(erro)
+        console.log(erro)
 
-    res
-    .status(500)
-    .json({msg: 'Aconteceu um erro no servidor, tente novamente mais tarde!',
-})
+        res
+            .status(500)
+            .json({
+                msg: 'Aconteceu um erro no servidor, tente novamente mais tarde!',
+            })
+    }
 }
-}
 
-async function removerCursos(req, res){
+async function removerCursos(req, res) {
 
     const id = req.params.id
     const cursos = await Curso.findByIdAndDelete(id)
@@ -73,26 +74,27 @@ async function removerCursos(req, res){
     })
 }
 
-async function editarCurso(req, res){
+async function editarCurso(req, res) {
     const id = req.params.id;
-  const title = req.body.title;
-  const img_url = req.body.img_url;
-  const link = req.body.link;
-  const description = req.body.description;
-  const categoria = req.body.categoria;
-  
+    const title = req.body.title;
+    const img_url = req.body.img_url;
+    const link = req.body.link;
+    const description = req.body.description;
+    const categoria = req.body.categoria;
 
-  try {
-    await Curso.findByIdAndUpdate(id, {
-      title: title,
-      img_url: img_url,
-      description: description,
-      link: link
-    });
-    return res.json({msg: "Atualizado com sucesso!"});
-  } catch (err) {
-    console.log(err)
-  }
+
+    try {
+        await Curso.findByIdAndUpdate(id, {
+            title: title,
+            img_url: img_url,
+            description: description,
+            link: link,
+            categoria: categoria
+        });
+        return res.json({ msg: "Atualizado com sucesso!" });
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 module.exports = {
