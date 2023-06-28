@@ -1,4 +1,4 @@
-const Curso = require("../models/curso");
+const Curso = require("../models/Curso");
 
 
 async function curso(req, res){
