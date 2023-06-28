@@ -20,7 +20,7 @@ async function cursos(req, res){
 }
 
 async function criarCurso(req, res){
-    const {title, description, img_url, link} = req.body
+    const {title, description, img_url, categoria, link} = req.body
 
     //validations
 
@@ -35,13 +35,17 @@ async function criarCurso(req, res){
     if(!link) {
         return res.status(422).json({msg: 'O link é obrigatório'})
     }
+    if(!categoria) {
+        return res.status(422).json({msg: 'Categoria é obrigatório'})
+    }
 //create curso
 
 const curso = new Curso({
     title,
     description,
     link,
-    img_url
+    img_url,
+    categoria
 })
 
 try {
@@ -75,6 +79,7 @@ async function editarCurso(req, res){
   const img_url = req.body.img_url;
   const link = req.body.link;
   const description = req.body.description;
+  const categoria = req.body.categoria;
   
 
   try {
